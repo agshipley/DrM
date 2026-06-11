@@ -20,6 +20,7 @@ export interface Sku {
   regulatory?: string
   replenishment?: Replenishment
   renderPrompt?: string
+  accentColor?: string
 }
 
 export interface GeneratedSpec {
@@ -33,6 +34,7 @@ export interface GeneratedSpec {
   waterBased: boolean
   scenario: ScenarioId
   rationale: string
+  accentColor: string
   renderPrompt: string
 }
 

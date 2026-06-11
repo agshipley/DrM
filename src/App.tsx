@@ -18,6 +18,9 @@ function loadProposals(): Sku[] {
   } catch { return [] }
 }
 
+// SALT must match api/render.ts — bump both together to invalidate caches
+const RENDER_SALT = 'v2:'
+
 function hashPrompt(s: string): string {
   let h = 5381
   for (let i = 0; i < s.length; i++) h = (((h << 5) + h) ^ s.charCodeAt(i)) >>> 0
@@ -51,9 +54,17 @@ export default function App() {
     })
   }
 
+  const onRenderResult = (hash: string, url: string, heroUrl: string | null) => {
+    setRenders((prev) => {
+      const next = { ...prev, [hash]: url }
+      if (heroUrl) next[hash + '-hero'] = heroUrl
+      return next
+    })
+  }
+
   const renderSku = async (sku: Sku) => {
     if (!sku.renderPrompt) return
-    const hash = hashPrompt(sku.renderPrompt)
+    const hash = hashPrompt(RENDER_SALT + sku.renderPrompt)
     if (renders[hash]) return
 
     // Clear any previous failure for this SKU
@@ -65,9 +76,13 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ renderPrompt: sku.renderPrompt }),
       })
-      const { url } = await res.json() as { url?: string | null }
+      const { url, heroUrl } = await res.json() as { url?: string | null; heroUrl?: string | null }
       if (url) {
-        setRenders((prev) => ({ ...prev, [hash]: url }))
+        setRenders((prev) => {
+          const next = { ...prev, [hash]: url }
+          if (heroUrl) next[hash + '-hero'] = heroUrl
+          return next
+        })
       } else {
         setRenderFailed((prev) => new Set([...prev, sku.id]))
       }
@@ -101,7 +116,10 @@ export default function App() {
   }
 
   const renderUrlFor = (sku: Sku): string | null =>
-    sku.renderPrompt ? (renders[hashPrompt(sku.renderPrompt)] ?? null) : null
+    sku.renderPrompt ? (renders[hashPrompt(RENDER_SALT + sku.renderPrompt)] ?? null) : null
+
+  const heroRenderUrlFor = (sku: Sku): string | null =>
+    sku.renderPrompt ? (renders[hashPrompt(RENDER_SALT + sku.renderPrompt) + '-hero'] ?? null) : null
 
   const unrenderedConceptCount = conceptSkus.filter(
     (s) => s.renderPrompt && !renderUrlFor(s)
@@ -127,7 +145,7 @@ export default function App() {
       <main className="px-4 py-8 max-w-2xl mx-auto space-y-12">
 
         <section>
-          <ProposeSuite onAddToShelf={addToShelf} />
+          <ProposeSuite onAddToShelf={addToShelf} onRenderResult={onRenderResult} />
         </section>
 
         <div className="h-px bg-ink/10" />
@@ -206,6 +224,7 @@ export default function App() {
         <SkuDetailOverlay
           sku={selectedSku}
           renderUrl={renderUrlFor(selectedSku)}
+          heroRenderUrl={heroRenderUrlFor(selectedSku)}
           onClose={() => setSelectedSku(null)}
         />
       )}

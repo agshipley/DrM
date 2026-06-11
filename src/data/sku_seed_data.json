@@ -2,47 +2,362 @@
   "meta": {
     "brand": "Dr. Max's",
     "source": "drmaxs.com June 2026 + Roadmap Decision Memo v2",
-    "note": "Prices verified for core 4 SKUs; null = capture from site. waterBased=true concepts are gated by the preservative-promise decision (Memo §3)."
+    "note": "Prices verified for core 4 SKUs; null = capture from site. waterBased=true concepts are gated by the preservative-promise decision (Memo \u00a73)."
   },
   "skus": [
-    { "id": "salve-all", "name": "Salve-All", "status": "current", "format": "tin", "ageBand": "family", "price": 22, "waterBased": false, "heroIngredients": ["calendula", "arnica", "sea buckthorn", "cedarwood"], "uses": ["dry skin", "sore muscles", "facial moisturizer", "bug bites"] },
-    { "id": "diaper-ointment", "name": "Diaper Ointment", "status": "current", "format": "tin", "ageBand": "0-12m", "price": 20, "waterBased": false, "heroIngredients": ["zinc oxide", "calendula"], "uses": ["diaper rash", "chafing"], "regulatory": "OTC, FDA-registered facility", "replenishment": "high" },
-    { "id": "baby-balm", "name": "Baby Balm", "status": "current", "format": "tin", "ageBand": "0-12m", "price": 18, "waterBased": false, "heroIngredients": ["calendula", "chamomile"], "uses": ["newborn skin", "cradle cap"], "replenishment": "high" },
-    { "id": "nipple-balm", "name": "Nipple Balm", "status": "current", "format": "tin", "ageBand": "adult", "price": 15, "waterBased": false, "uses": ["breastfeeding", "chapped lips"], "replenishment": "medium" },
-    { "id": "olive-oil-soap", "name": "Olive Oil Soap", "status": "current", "format": "soap-bar", "ageBand": "family", "price": null, "waterBased": false, "replenishment": "high" },
-    { "id": "washcloths", "name": "Organic Cotton Wash Cloths", "status": "current", "format": "cotton", "ageBand": "family", "price": null },
-    { "id": "zipper-bags", "name": "Organic Cotton Zipper Bags", "status": "current", "format": "cotton", "ageBand": "family", "price": null },
-    { "id": "childrens-book", "name": "Dr. Animals Children's Book", "status": "current", "format": "paper", "ageBand": "1-3y", "price": null },
-    { "id": "seed-packet", "name": "Calendula Seed Packet", "status": "current", "format": "paper", "ageBand": "family", "price": null },
-
-    { "id": "c-eczema-cream", "name": "Eczema Relief Cream", "status": "concept", "scenario": "all-branch", "format": "tube", "ageBand": "0-3y", "price": 24, "waterBased": false, "heroIngredients": ["colloidal oatmeal", "calendula"], "rationale": "The bridge SKU: 60% of eczema presents in year one, 85% by age 5; serves velocity AND duration; OTC monograph route already proven with Diaper Ointment; proceeds on every decision branch", "regulatory": "OTC colloidal oatmeal skin protectant", "replenishment": "high", "renderPrompt": "Tall slender cream-colored cosmetic tube with a white flip-top cap, standing upright on its cap. Label on the tube body reads 'Dr. Max's Eczema Relief Cream' with 'colloidal oatmeal, calendula' below in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-    { "id": "c-belly-balm", "name": "Belly Balm (Pregnancy)", "status": "concept", "scenario": "all-branch", "format": "tin", "ageBand": "adult", "price": 24, "waterBased": false, "rationale": "Moves acquisition earlier (Earth Mama/Mustela wedge); registry-season friendly; anhydrous", "replenishment": "medium", "renderPrompt": "Wide shallow round salve tin with a smooth brushed-metal lid. Cream paper label band reads 'Dr. Max's Belly Balm (Pregnancy)' in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-
-    { "id": "c-cleansing-oil", "name": "Baby Cleansing Oil", "status": "concept", "scenario": "velocity", "format": "bottle", "ageBand": "0-12m", "price": 24, "waterBased": false, "rationale": "Fills the wash gap WITHOUT breaking the preservative promise; daily-bath replenishment", "replenishment": "high", "renderPrompt": "Small amber glass dropper bottle with a black rubber pipette cap. Cream paper label reads 'Dr. Max's Baby Cleansing Oil' in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-    { "id": "c-bath-soak", "name": "Oatmeal Bath Soak", "status": "concept", "scenario": "velocity", "format": "jar", "ageBand": "family", "price": 22, "waterBased": false, "heroIngredients": ["colloidal oatmeal", "chamomile"], "rationale": "Anhydrous bath ritual; clinically on-trend; pairs with Eczema Cream", "replenishment": "high", "renderPrompt": "Wide squat glass jar with a polished brushed-metal screw lid. Cream paper label reads 'Dr. Max's Oatmeal Bath Soak' with 'colloidal oatmeal & chamomile' below in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-    { "id": "c-lotion-bar", "name": "Solid Lotion Bar", "status": "concept", "scenario": "velocity", "format": "tin", "ageBand": "family", "price": 20, "waterBased": false, "rationale": "Post-bath lotion occasion in promise-compatible solid format", "replenishment": "high", "renderPrompt": "Small round metal tin with a brushed silver lid. Cream paper label reads 'Dr. Max's Solid Lotion Bar' in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-    { "id": "c-baby-wash", "name": "Gentle Hair & Body Wash", "status": "concept", "scenario": "velocity", "format": "bottle", "ageBand": "0-12m", "price": 22, "waterBased": true, "rationale": "GATED: highest-velocity SKU in category (Tubby Todd Regulars anchor) but requires preservative-promise refinement", "replenishment": "high", "renderPrompt": "Soft-touch cream-colored plastic pump bottle with a deep indigo pump head and flip-top cap. Label reads 'Dr. Max's Gentle Hair & Body Wash' in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-
-    { "id": "c-boo-boo-balm", "name": "Boo-Boo Balm", "status": "concept", "scenario": "duration", "format": "tin", "ageBand": "1-3y", "price": 16, "waterBased": false, "heroIngredients": ["calendula", "yarrow"], "rationale": "Toddler minor-injury ritual; pairs with Dr. Animals book in Big Kid Bath Box; price at/above Salve-All per-oz to limit cannibalization", "replenishment": "medium", "renderPrompt": "Small round metal tin with a brushed-metal lid. Cream paper label reads 'Dr. Max's Boo-Boo Balm' with 'calendula & yarrow' below in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-    { "id": "c-bubble-bath", "name": "Calendula Bubble Bath", "status": "concept", "scenario": "duration", "format": "bottle", "ageBand": "1-3y", "price": 20, "waterBased": true, "rationale": "GATED: toddler bathtime is the retention ritual, but format requires preservative decision", "replenishment": "high", "renderPrompt": "Soft plastic pour bottle with a flip-top cap, cream-colored body. Label reads 'Dr. Max's Calendula Bubble Bath' in deep indigo serif type. Soft diffused studio lighting. Product object only." },
-    { "id": "c-detangler", "name": "Chamomile Hair Detangler", "status": "concept", "scenario": "duration", "format": "bottle", "ageBand": "1-3y", "price": 18, "waterBased": true, "rationale": "GATED: daily-use consumable; water-based spray", "replenishment": "high", "renderPrompt": "Slim cream-colored plastic spray bottle with a clear trigger nozzle. Label reads 'Dr. Max's Chamomile Hair Detangler' in deep indigo serif type. Soft diffused studio lighting. Product object only." }
+    {
+      "id": "salve-all",
+      "name": "Salve-All",
+      "status": "current",
+      "format": "tin",
+      "ageBand": "family",
+      "price": 22,
+      "waterBased": false,
+      "heroIngredients": [
+        "calendula",
+        "arnica",
+        "sea buckthorn",
+        "cedarwood"
+      ],
+      "uses": [
+        "dry skin",
+        "sore muscles",
+        "facial moisturizer",
+        "bug bites"
+      ]
+    },
+    {
+      "id": "diaper-ointment",
+      "name": "Diaper Ointment",
+      "status": "current",
+      "format": "tin",
+      "ageBand": "0-12m",
+      "price": 20,
+      "waterBased": false,
+      "heroIngredients": [
+        "zinc oxide",
+        "calendula"
+      ],
+      "uses": [
+        "diaper rash",
+        "chafing"
+      ],
+      "regulatory": "OTC, FDA-registered facility",
+      "replenishment": "high"
+    },
+    {
+      "id": "baby-balm",
+      "name": "Baby Balm",
+      "status": "current",
+      "format": "tin",
+      "ageBand": "0-12m",
+      "price": 18,
+      "waterBased": false,
+      "heroIngredients": [
+        "calendula",
+        "chamomile"
+      ],
+      "uses": [
+        "newborn skin",
+        "cradle cap"
+      ],
+      "replenishment": "high"
+    },
+    {
+      "id": "nipple-balm",
+      "name": "Nipple Balm",
+      "status": "current",
+      "format": "tin",
+      "ageBand": "adult",
+      "price": 15,
+      "waterBased": false,
+      "uses": [
+        "breastfeeding",
+        "chapped lips"
+      ],
+      "replenishment": "medium"
+    },
+    {
+      "id": "olive-oil-soap",
+      "name": "Olive Oil Soap",
+      "status": "current",
+      "format": "soap-bar",
+      "ageBand": "family",
+      "price": null,
+      "waterBased": false,
+      "replenishment": "high"
+    },
+    {
+      "id": "washcloths",
+      "name": "Organic Cotton Wash Cloths",
+      "status": "current",
+      "format": "cotton",
+      "ageBand": "family",
+      "price": null
+    },
+    {
+      "id": "zipper-bags",
+      "name": "Organic Cotton Zipper Bags",
+      "status": "current",
+      "format": "cotton",
+      "ageBand": "family",
+      "price": null
+    },
+    {
+      "id": "childrens-book",
+      "name": "Dr. Animals Children's Book",
+      "status": "current",
+      "format": "paper",
+      "ageBand": "1-3y",
+      "price": null
+    },
+    {
+      "id": "seed-packet",
+      "name": "Calendula Seed Packet",
+      "status": "current",
+      "format": "paper",
+      "ageBand": "family",
+      "price": null
+    },
+    {
+      "id": "c-eczema-cream",
+      "name": "Eczema Relief Cream",
+      "status": "concept",
+      "scenario": "all-branch",
+      "format": "tube",
+      "ageBand": "0-3y",
+      "price": 24,
+      "waterBased": false,
+      "heroIngredients": [
+        "colloidal oatmeal",
+        "calendula"
+      ],
+      "rationale": "The bridge SKU: 60% of eczema presents in year one, 85% by age 5; serves velocity AND duration; OTC monograph route already proven with Diaper Ointment; proceeds on every decision branch",
+      "regulatory": "OTC colloidal oatmeal skin protectant",
+      "replenishment": "high",
+      "renderPrompt": "ECZEMA RELIEF CREAM in teal candy-stripe carton. A cream/white matte squeeze tube sits beside the open carton.",
+      "accentColor": "teal"
+    },
+    {
+      "id": "c-belly-balm",
+      "name": "Belly Balm (Pregnancy)",
+      "status": "concept",
+      "scenario": "all-branch",
+      "format": "tin",
+      "ageBand": "adult",
+      "price": 24,
+      "waterBased": false,
+      "rationale": "Moves acquisition earlier (Earth Mama/Mustela wedge); registry-season friendly; anhydrous",
+      "replenishment": "medium",
+      "renderPrompt": "BELLY BALM in marigold candy-stripe carton. A pale brushed-metal round tin sits beside the open carton.",
+      "accentColor": "marigold"
+    },
+    {
+      "id": "c-cleansing-oil",
+      "name": "Baby Cleansing Oil",
+      "status": "concept",
+      "scenario": "velocity",
+      "format": "bottle",
+      "ageBand": "0-12m",
+      "price": 24,
+      "waterBased": false,
+      "rationale": "Fills the wash gap WITHOUT breaking the preservative promise; daily-bath replenishment",
+      "replenishment": "high",
+      "renderPrompt": "BABY CLEANSING OIL in cornflower blue candy-stripe carton. A cream/white matte dropper bottle sits beside the open carton.",
+      "accentColor": "cornflower-blue"
+    },
+    {
+      "id": "c-bath-soak",
+      "name": "Oatmeal Bath Soak",
+      "status": "concept",
+      "scenario": "velocity",
+      "format": "jar",
+      "ageBand": "family",
+      "price": 22,
+      "waterBased": false,
+      "heroIngredients": [
+        "colloidal oatmeal",
+        "chamomile"
+      ],
+      "rationale": "Anhydrous bath ritual; clinically on-trend; pairs with Eczema Cream",
+      "replenishment": "high",
+      "renderPrompt": "OATMEAL BATH SOAK in dusty rose candy-stripe carton. A clear glass jar with cream matte lid sits beside the open carton.",
+      "accentColor": "dusty-rose"
+    },
+    {
+      "id": "c-lotion-bar",
+      "name": "Solid Lotion Bar",
+      "status": "concept",
+      "scenario": "velocity",
+      "format": "tin",
+      "ageBand": "family",
+      "price": 20,
+      "waterBased": false,
+      "rationale": "Post-bath lotion occasion in promise-compatible solid format",
+      "replenishment": "high",
+      "renderPrompt": "SOLID LOTION BAR in forest green candy-stripe carton. A pale brushed-metal round tin sits beside the open carton.",
+      "accentColor": "forest-green"
+    },
+    {
+      "id": "c-baby-wash",
+      "name": "Gentle Hair & Body Wash",
+      "status": "concept",
+      "scenario": "velocity",
+      "format": "bottle",
+      "ageBand": "0-12m",
+      "price": 22,
+      "waterBased": true,
+      "rationale": "GATED: highest-velocity SKU in category (Tubby Todd Regulars anchor) but requires preservative-promise refinement",
+      "replenishment": "high",
+      "renderPrompt": "GENTLE HAIR & BODY WASH in sky blue candy-stripe carton. A cream/white matte pump bottle sits beside the open carton.",
+      "accentColor": "sky-blue"
+    },
+    {
+      "id": "c-boo-boo-balm",
+      "name": "Boo-Boo Balm",
+      "status": "concept",
+      "scenario": "duration",
+      "format": "tin",
+      "ageBand": "1-3y",
+      "price": 16,
+      "waterBased": false,
+      "heroIngredients": [
+        "calendula",
+        "yarrow"
+      ],
+      "rationale": "Toddler minor-injury ritual; pairs with Dr. Animals book in Big Kid Bath Box; price at/above Salve-All per-oz to limit cannibalization",
+      "replenishment": "medium",
+      "renderPrompt": "BOO-BOO BALM in coral candy-stripe carton. A pale brushed-metal round tin sits beside the open carton.",
+      "accentColor": "coral"
+    },
+    {
+      "id": "c-bubble-bath",
+      "name": "Calendula Bubble Bath",
+      "status": "concept",
+      "scenario": "duration",
+      "format": "bottle",
+      "ageBand": "1-3y",
+      "price": 20,
+      "waterBased": true,
+      "rationale": "GATED: toddler bathtime is the retention ritual, but format requires preservative decision",
+      "replenishment": "high",
+      "renderPrompt": "CALENDULA BUBBLE BATH in orange candy-stripe carton. A cream/white matte bottle with flip-top cap sits beside the open carton.",
+      "accentColor": "orange"
+    },
+    {
+      "id": "c-detangler",
+      "name": "Chamomile Hair Detangler",
+      "status": "concept",
+      "scenario": "duration",
+      "format": "bottle",
+      "ageBand": "1-3y",
+      "price": 18,
+      "waterBased": true,
+      "rationale": "GATED: daily-use consumable; water-based spray",
+      "replenishment": "high",
+      "renderPrompt": "CHAMOMILE HAIR DETANGLER in lavender candy-stripe carton. A cream/white matte spray bottle sits beside the open carton.",
+      "accentColor": "lavender"
+    }
   ],
   "bundles": [
-    { "id": "new-parent-gift-box", "name": "New Parent Gift Box", "contains": ["zipper-bags", "washcloths", "olive-oil-soap", "baby-balm", "diaper-ointment", "salve-all", "nipple-balm", "childrens-book", "seed-packet"] },
-    { "id": "newborn-gift-box", "name": "Newborn Gift Box", "contains": ["zipper-bags", "washcloths", "olive-oil-soap", "baby-balm", "diaper-ointment"] },
-    { "id": "baby-essentials", "name": "Baby Essentials Bundle", "contains": ["baby-balm", "diaper-ointment", "olive-oil-soap"] },
-    { "id": "adult-essentials", "name": "Adult Essentials Bundle", "contains": ["salve-all", "nipple-balm", "olive-oil-soap"] },
-    { "id": "c-daily-routine", "name": "Daily Routine Bundle (concept)", "contains": ["c-cleansing-oil", "c-lotion-bar", "diaper-ointment"], "scenario": "velocity" },
-    { "id": "c-big-kid-bath-box", "name": "Big Kid Bath Box (concept)", "contains": ["c-boo-boo-balm", "c-bath-soak", "childrens-book", "washcloths"], "scenario": "duration" }
+    {
+      "id": "new-parent-gift-box",
+      "name": "New Parent Gift Box",
+      "contains": [
+        "zipper-bags",
+        "washcloths",
+        "olive-oil-soap",
+        "baby-balm",
+        "diaper-ointment",
+        "salve-all",
+        "nipple-balm",
+        "childrens-book",
+        "seed-packet"
+      ]
+    },
+    {
+      "id": "newborn-gift-box",
+      "name": "Newborn Gift Box",
+      "contains": [
+        "zipper-bags",
+        "washcloths",
+        "olive-oil-soap",
+        "baby-balm",
+        "diaper-ointment"
+      ]
+    },
+    {
+      "id": "baby-essentials",
+      "name": "Baby Essentials Bundle",
+      "contains": [
+        "baby-balm",
+        "diaper-ointment",
+        "olive-oil-soap"
+      ]
+    },
+    {
+      "id": "adult-essentials",
+      "name": "Adult Essentials Bundle",
+      "contains": [
+        "salve-all",
+        "nipple-balm",
+        "olive-oil-soap"
+      ]
+    },
+    {
+      "id": "c-daily-routine",
+      "name": "Daily Routine Bundle (concept)",
+      "contains": [
+        "c-cleansing-oil",
+        "c-lotion-bar",
+        "diaper-ointment"
+      ],
+      "scenario": "velocity"
+    },
+    {
+      "id": "c-big-kid-bath-box",
+      "name": "Big Kid Bath Box (concept)",
+      "contains": [
+        "c-boo-boo-balm",
+        "c-bath-soak",
+        "childrens-book",
+        "washcloths"
+      ],
+      "scenario": "duration"
+    }
   ],
   "scenarios": [
-    { "id": "all-branch", "name": "Phase 1 — All Branches", "thesis": "SKUs that pay off regardless of which decision branch the owned-data pull (N1/N2/N3) selects: the eczema bridge and the pregnancy acquisition wedge. Proceed now while data settles the rest." },
-    { "id": "velocity", "name": "Velocity — Own the Daily Routine", "thesis": "Year one is the highest-frequency consumption window in childhood. Complete the daily routine (cleanse, soothe, protect) in promise-compatible formats and capture share-of-routine. Selected if N1 low / N3 high (customers migrate to Salve-All; multi-use thesis working)." },
-    { "id": "duration", "name": "Duration — Grow With the Customer", "thesis": "Extend relationship past age one with toddler condition/ritual SKUs. Selected if N1 low / N3 low (churn wall real, multi-use thesis aspirational). Requires replenishment mechanics (subscriptions) first." }
+    {
+      "id": "all-branch",
+      "name": "Phase 1 \u2014 All Branches",
+      "thesis": "SKUs that pay off regardless of which decision branch the owned-data pull (N1/N2/N3) selects: the eczema bridge and the pregnancy acquisition wedge. Proceed now while data settles the rest."
+    },
+    {
+      "id": "velocity",
+      "name": "Velocity \u2014 Own the Daily Routine",
+      "thesis": "Year one is the highest-frequency consumption window in childhood. Complete the daily routine (cleanse, soothe, protect) in promise-compatible formats and capture share-of-routine. Selected if N1 low / N3 high (customers migrate to Salve-All; multi-use thesis working)."
+    },
+    {
+      "id": "duration",
+      "name": "Duration \u2014 Grow With the Customer",
+      "thesis": "Extend relationship past age one with toddler condition/ritual SKUs. Selected if N1 low / N3 low (churn wall real, multi-use thesis aspirational). Requires replenishment mechanics (subscriptions) first."
+    }
   ],
   "decisionInputs": [
-    { "id": "N1", "name": "Post-12mo repeat rate", "question": "Of customers whose first order contained a 0-12m SKU, what share order again after month 12, and what do they buy?" },
-    { "id": "N2", "name": "Self-purchase share", "question": "What share of revenue is self-purchase vs gift (ship-to != bill-to, gift notes, gift boxes)?" },
-    { "id": "N3", "name": "Salve-All migration", "question": "Among baby-SKU first-buyers, what share later purchase Salve-All or adult/family SKUs?" }
+    {
+      "id": "N1",
+      "name": "Post-12mo repeat rate",
+      "question": "Of customers whose first order contained a 0-12m SKU, what share order again after month 12, and what do they buy?"
+    },
+    {
+      "id": "N2",
+      "name": "Self-purchase share",
+      "question": "What share of revenue is self-purchase vs gift (ship-to != bill-to, gift notes, gift boxes)?"
+    },
+    {
+      "id": "N3",
+      "name": "Salve-All migration",
+      "question": "Among baby-SKU first-buyers, what share later purchase Salve-All or adult/family SKUs?"
+    }
   ]
 }

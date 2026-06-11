@@ -4,11 +4,21 @@ import { ProposePanel, DEFAULT_LOCKED, buildLockedParams } from './ProposePanel'
 import type { LockedState } from './ProposePanel'
 import { ProposalHero, specToSku } from './ProposalHero'
 
-interface ProposeSuiteProps {
-  onAddToShelf: (sku: Sku) => void
+// Must match RENDER_SALT + hash in App.tsx and api/render.ts
+const RENDER_SALT = 'v2:'
+function hashRenderPrompt(renderPrompt: string): string {
+  const s = RENDER_SALT + renderPrompt
+  let h = 5381
+  for (let i = 0; i < s.length; i++) h = (((h << 5) + h) ^ s.charCodeAt(i)) >>> 0
+  return h.toString(36)
 }
 
-export function ProposeSuite({ onAddToShelf }: ProposeSuiteProps) {
+interface ProposeSuiteProps {
+  onAddToShelf: (sku: Sku) => void
+  onRenderResult: (hash: string, url: string, heroUrl: string | null) => void
+}
+
+export function ProposeSuite({ onAddToShelf, onRenderResult }: ProposeSuiteProps) {
   const [idea, setIdea] = useState('')
   const [locked, setLocked] = useState<LockedState>(DEFAULT_LOCKED)
   const [spec, setSpec] = useState<GeneratedSpec | null>(null)
@@ -47,8 +57,12 @@ export function ProposeSuite({ onAddToShelf }: ProposeSuiteProps) {
         body: JSON.stringify({ renderPrompt: newSpec.renderPrompt }),
       })
         .then((r) => r.json())
-        .then(({ url, error }: { url?: string | null; error?: string }) => {
-          if (url) setRenderImage(url)
+        .then(({ url, heroUrl, error }: { url?: string | null; heroUrl?: string | null; error?: string }) => {
+          if (url) {
+            setRenderImage(url)
+            // Notify App.tsx so the render appears in shelf card + overlay immediately
+            onRenderResult(hashRenderPrompt(newSpec.renderPrompt), url, heroUrl ?? null)
+          }
           else if (error) setRenderError(error)
         })
         .catch((e) => setRenderError(String(e)))

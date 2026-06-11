@@ -5,7 +5,7 @@
   "framework": "vite",
   "functions": {
     "api/generate.ts": { "maxDuration": 30 },
-    "api/render.ts": { "maxDuration": 60 },
+    "api/render.ts": { "maxDuration": 60, "includeFiles": "{public/products,public/plates}/**" },
     "api/manifest.ts": { "maxDuration": 10 }
   }
 }

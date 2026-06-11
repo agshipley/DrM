@@ -48,6 +48,7 @@ export function specToSku(spec: GeneratedSpec): Sku {
     uses: spec.uses,
     rationale: spec.rationale,
     renderPrompt: spec.renderPrompt,
+    accentColor: spec.accentColor,
   }
 }
 

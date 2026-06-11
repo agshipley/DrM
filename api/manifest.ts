@@ -9,7 +9,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const manifest: Record<string, string> = {}
     for (const blob of blobs) {
       // pathname is "renders/{hash}.png" — extract the hash
-      const hash = blob.pathname.replace(/^renders\//, '').replace(/\.png$/, '')
+      const hash = blob.pathname.replace(/^renders\//, '').replace(/\.(png|jpg|jpeg)$/, '')
       manifest[hash] = blob.url
     }
     res.setHeader('Cache-Control', 'no-store')

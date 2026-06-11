@@ -35,10 +35,13 @@ const AGE_LABELS: Record<string, string> = {
 interface SkuDetailOverlayProps {
   sku: Sku
   renderUrl: string | null
+  heroRenderUrl?: string | null
   onClose: () => void
 }
 
-export function SkuDetailOverlay({ sku, renderUrl, onClose }: SkuDetailOverlayProps) {
+export function SkuDetailOverlay({ sku, renderUrl, heroRenderUrl, onClose }: SkuDetailOverlayProps) {
+  // Hero overlay uses the plate-composited image; falls back to card render or SVG visual
+  const heroSrc = heroRenderUrl ?? renderUrl
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -88,13 +91,13 @@ export function SkuDetailOverlay({ sku, renderUrl, onClose }: SkuDetailOverlayPr
           </svg>
         </button>
 
-        {/* Image — fixed height on mobile, full-height left column on desktop */}
-        <div className="md:w-5/12 bg-shell flex items-center justify-center p-6 min-h-52 max-h-60 md:max-h-none md:min-h-0 flex-shrink-0 relative">
-          {renderUrl ? (
+        {/* Image — hero composite fills the column; falls back to card render or SVG */}
+        <div className={`md:w-5/12 flex-shrink-0 relative overflow-hidden ${heroSrc ? 'bg-transparent' : 'bg-shell flex items-center justify-center p-6'} min-h-52 max-h-64 md:max-h-none md:min-h-0`}>
+          {heroSrc ? (
             <img
-              src={renderUrl}
+              src={heroSrc}
               alt={sku.name}
-              className="max-h-48 md:max-h-full w-full object-contain drop-shadow-md"
+              className="w-full h-full object-cover"
             />
           ) : (
             <div className="w-40 h-48">
