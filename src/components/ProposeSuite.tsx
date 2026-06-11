@@ -76,9 +76,10 @@ export function ProposeSuite({ onAddToShelf }: ProposeSuiteProps) {
         isGenerating={isGenerating}
         error={generateError}
       />
-      {spec && (
+      {(isGenerating || spec) && (
         <ProposalHero
           spec={spec}
+          isGenerating={isGenerating}
           renderImage={renderImage}
           isRendering={isRendering}
           renderError={renderError}

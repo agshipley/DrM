@@ -1,5 +1,6 @@
 import type { Sku } from '../types'
 import SkuVisual from './SkuVisual'
+import { Spinner } from './Spinner'
 
 const AGE_BAND_LABELS: Record<string, string> = {
   '0-12m': '0–12m',
@@ -27,13 +28,24 @@ interface SkuCardProps {
   sku: Sku
   renderUrl?: string | null
   isRendering?: boolean
+  inQueue?: boolean
+  renderFailed?: boolean
   onRender?: () => void
   onClick?: () => void
 }
 
-export function SkuCard({ sku, renderUrl, isRendering, onRender, onClick }: SkuCardProps) {
+export function SkuCard({
+  sku,
+  renderUrl,
+  isRendering,
+  inQueue,
+  renderFailed,
+  onRender,
+  onClick,
+}: SkuCardProps) {
   const isConcept = sku.status === 'concept'
   const isGated = sku.waterBased === true
+  const isActive = isRendering || !!inQueue  // any loading state
 
   return (
     <article
@@ -59,7 +71,10 @@ export function SkuCard({ sku, renderUrl, isRendering, onRender, onClick }: SkuC
       )}
 
       {/* Visual */}
-      <div className="relative h-32 overflow-hidden">
+      <div
+        className="relative h-32 overflow-hidden"
+        aria-busy={isActive}
+      >
         {renderUrl ? (
           <img
             src={renderUrl}
@@ -70,17 +85,8 @@ export function SkuCard({ sku, renderUrl, isRendering, onRender, onClick }: SkuC
           <SkuVisual sku={sku} />
         )}
 
-        {/* Render in-progress overlay */}
-        {isRendering && (
-          <div className="absolute inset-0 flex items-center justify-center bg-shell/70">
-            <span className="text-[8px] uppercase tracking-widest text-ink/40 animate-pulse">
-              rendering…
-            </span>
-          </div>
-        )}
-
-        {/* Render button */}
-        {!renderUrl && !isRendering && onRender && sku.renderPrompt && (
+        {/* Render button — only when idle, no render, no failure */}
+        {!renderUrl && !isActive && !renderFailed && onRender && sku.renderPrompt && (
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); onRender() }}
@@ -91,13 +97,44 @@ export function SkuCard({ sku, renderUrl, isRendering, onRender, onClick }: SkuC
         )}
 
         {/* Lock badge */}
-        {isGated && !isRendering && (
+        {isGated && !isActive && (
           <span
             className="absolute bottom-1 left-1 text-base leading-none opacity-60"
             title="Water-based — gated by preservative decision"
           >
             🔒
           </span>
+        )}
+
+        {/* ── Queued scrim ── */}
+        {inQueue && !isRendering && !renderUrl && (
+          <div className="absolute inset-0 bg-cream/70 backdrop-blur-sm flex items-center justify-center">
+            <span className="text-[8px] uppercase tracking-widest text-ink/45">Queued…</span>
+          </div>
+        )}
+
+        {/* ── Rendering scrim ── */}
+        {isRendering && !renderUrl && (
+          <div className="absolute inset-0 bg-cream/70 backdrop-blur-sm flex flex-col items-center justify-center gap-1.5">
+            <Spinner size="sm" />
+            <span className="text-[8px] uppercase tracking-widest text-ink/50">Rendering…</span>
+          </div>
+        )}
+
+        {/* ── Error scrim — never silently resolves to bare comp ── */}
+        {renderFailed && !renderUrl && !isActive && (
+          <div className="absolute inset-0 bg-cream/85 flex flex-col items-center justify-center gap-1.5">
+            <span className="text-[8px] uppercase tracking-widest text-clay/70">Render failed</span>
+            {onRender && (
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onRender() }}
+                className="text-[8px] uppercase tracking-widest px-2 py-0.5 rounded border border-clay/30 text-clay/70 hover:bg-clay/10 transition-colors leading-none"
+              >
+                Retry
+              </button>
+            )}
+          </div>
         )}
       </div>
 

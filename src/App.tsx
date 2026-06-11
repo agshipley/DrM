@@ -31,6 +31,7 @@ export default function App() {
   const [renders, setRenders] = useState<Record<string, string>>({})
   const [renderingId, setRenderingId] = useState<string | null>(null)
   const [renderQueue, setRenderQueue] = useState<string[]>([])
+  const [renderFailed, setRenderFailed] = useState<Set<string>>(new Set())
   const isRenderingAllRef = useRef(false)
 
   const [selectedSku, setSelectedSku] = useState<Sku | null>(null)
@@ -55,6 +56,8 @@ export default function App() {
     const hash = hashPrompt(sku.renderPrompt)
     if (renders[hash]) return
 
+    // Clear any previous failure for this SKU
+    setRenderFailed((prev) => { const s = new Set(prev); s.delete(sku.id); return s })
     setRenderingId(sku.id)
     try {
       const res = await fetch('/api/render', {
@@ -65,9 +68,12 @@ export default function App() {
       const { url } = await res.json() as { url?: string | null }
       if (url) {
         setRenders((prev) => ({ ...prev, [hash]: url }))
+      } else {
+        setRenderFailed((prev) => new Set([...prev, sku.id]))
       }
     } catch (e) {
       console.error('render error', sku.id, e)
+      setRenderFailed((prev) => new Set([...prev, sku.id]))
     } finally {
       setRenderingId(null)
     }
@@ -106,7 +112,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-cream">
 
-      {/* Header */}
       <header className="px-5 pt-10 pb-6 border-b border-ink/10">
         <p className="text-[10px] uppercase tracking-widest text-ink/40 mb-1">
           Internal Decision Tool
@@ -180,6 +185,8 @@ export default function App() {
                 sku={sku}
                 renderUrl={renderUrlFor(sku)}
                 isRendering={renderingId === sku.id}
+                inQueue={renderQueue.includes(sku.id)}
+                renderFailed={renderFailed.has(sku.id)}
                 onRender={() => renderSku(sku)}
                 onClick={() => setSelectedSku(sku)}
               />
