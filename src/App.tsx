@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import seedData from './data/sku_seed_data.json'
 import type { Sku } from './types'
 import { SkuCard } from './components/SkuCard'
+import { SkuDetailOverlay } from './components/SkuDetailOverlay'
 import { ProposeSuite } from './components/ProposeSuite'
 
 const seedSkus = seedData.skus as Sku[]
@@ -27,18 +28,18 @@ export default function App() {
   const [proposals, setProposals] = useState<Sku[]>(loadProposals)
   const conceptSkus = [...seedConceptSkus, ...proposals]
 
-  // hash → public Blob URL, loaded from /api/manifest on mount
   const [renders, setRenders] = useState<Record<string, string>>({})
   const [renderingId, setRenderingId] = useState<string | null>(null)
   const [renderQueue, setRenderQueue] = useState<string[]>([])
   const isRenderingAllRef = useRef(false)
 
-  // Load existing renders from Blob manifest on mount
+  const [selectedSku, setSelectedSku] = useState<Sku | null>(null)
+
   useEffect(() => {
     fetch('/api/manifest')
       .then((r) => r.json())
       .then((manifest: Record<string, string>) => setRenders(manifest))
-      .catch(() => {/* no-op: renders just start empty */})
+      .catch(() => {})
   }, [])
 
   const addToShelf = (sku: Sku) => {
@@ -120,7 +121,6 @@ export default function App() {
 
       <main className="px-4 py-8 max-w-2xl mx-auto space-y-12">
 
-        {/* Propose panel */}
         <section>
           <ProposeSuite onAddToShelf={addToShelf} />
         </section>
@@ -135,7 +135,11 @@ export default function App() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {currentSkus.map((sku) => (
-              <SkuCard key={sku.id} sku={sku} />
+              <SkuCard
+                key={sku.id}
+                sku={sku}
+                onClick={() => setSelectedSku(sku)}
+              />
             ))}
           </div>
         </section>
@@ -177,6 +181,7 @@ export default function App() {
                 renderUrl={renderUrlFor(sku)}
                 isRendering={renderingId === sku.id}
                 onRender={() => renderSku(sku)}
+                onClick={() => setSelectedSku(sku)}
               />
             ))}
           </div>
@@ -189,6 +194,14 @@ export default function App() {
           {seedData.meta.brand} · {seedData.meta.source}
         </p>
       </footer>
+
+      {selectedSku && (
+        <SkuDetailOverlay
+          sku={selectedSku}
+          renderUrl={renderUrlFor(selectedSku)}
+          onClose={() => setSelectedSku(null)}
+        />
+      )}
 
     </div>
   )

@@ -15,6 +15,7 @@ export interface Sku {
   waterBased?: boolean
   heroIngredients?: string[]
   uses?: string[]
+  tagline?: string
   rationale?: string
   regulatory?: string
   replenishment?: Replenishment

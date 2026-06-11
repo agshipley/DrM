@@ -36,6 +36,7 @@ export function specToSku(spec: GeneratedSpec): Sku {
   return {
     id: `proposal-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     name: spec.name,
+    tagline: spec.tagline,
     status: 'concept',
     scenario: spec.scenario,
     format: spec.format,

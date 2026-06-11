@@ -28,9 +28,10 @@ interface SkuCardProps {
   renderUrl?: string | null
   isRendering?: boolean
   onRender?: () => void
+  onClick?: () => void
 }
 
-export function SkuCard({ sku, renderUrl, isRendering, onRender }: SkuCardProps) {
+export function SkuCard({ sku, renderUrl, isRendering, onRender, onClick }: SkuCardProps) {
   const isConcept = sku.status === 'concept'
   const isGated = sku.waterBased === true
 
@@ -40,7 +41,15 @@ export function SkuCard({ sku, renderUrl, isRendering, onRender }: SkuCardProps)
         'relative flex flex-col rounded-2xl p-4 gap-3 select-none',
         'bg-sand',
         isConcept ? 'ring-1 ring-calendula/30' : '',
+        onClick
+          ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-[transform,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream'
+          : '',
       ].join(' ')}
+      tabIndex={onClick ? 0 : undefined}
+      role={onClick ? 'button' : undefined}
+      aria-label={onClick ? `View details for ${sku.name}` : undefined}
+      onClick={onClick}
+      onKeyDown={(e) => { if (onClick && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onClick() } }}
     >
       {/* Concept badge */}
       {isConcept && (
@@ -70,7 +79,7 @@ export function SkuCard({ sku, renderUrl, isRendering, onRender }: SkuCardProps)
           </div>
         )}
 
-        {/* Render button — only when no render yet and one is available */}
+        {/* Render button */}
         {!renderUrl && !isRendering && onRender && sku.renderPrompt && (
           <button
             type="button"
