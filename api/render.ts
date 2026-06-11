@@ -3,7 +3,7 @@ import { list, put } from '@vercel/blob'
 import OpenAI, { toFile } from 'openai'
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import sharp from 'sharp'
+import { Jimp } from 'jimp'
 
 // Bump SALT to invalidate previous renders without deleting old blobs
 const SALT = 'v2:'
@@ -38,47 +38,47 @@ async function compositeHero(cardPngBuffer: Buffer, plateIdx: number): Promise<B
   const platePath = join(process.cwd(), 'public', 'plates', `plate-${plateIdx}.jpg`)
   const plateBuffer = readFileSync(platePath)
 
-  // Resize product to ~65% of plate, preserving aspect ratio
   const PRODUCT_MAX = Math.round(PLATE_SIZE * 0.65) // 665px
 
-  const productResized = await sharp(cardPngBuffer)
-    .resize(PRODUCT_MAX, PRODUCT_MAX, {
-      fit: 'inside',
-      background: { r: 0, g: 0, b: 0, alpha: 0 },
-    })
-    .png()
-    .toBuffer()
+  // Load plate (blurred coastal backdrop), cover-resize to square
+  const plate = await Jimp.read(plateBuffer)
+  plate.cover({ w: PLATE_SIZE, h: PLATE_SIZE })
 
-  const { width: pw = PRODUCT_MAX, height: ph = PRODUCT_MAX } = await sharp(productResized).metadata()
+  // Load product PNG, contain-resize to fit within PRODUCT_MAX
+  const productImg = await Jimp.read(cardPngBuffer)
+  productImg.contain({ w: PRODUCT_MAX, h: PRODUCT_MAX })
 
-  // Center product, nudged slightly above vertical center (like real product shots)
+  const pw = productImg.bitmap.width
+  const ph = productImg.bitmap.height
+
+  // Center product, nudge slightly above vertical center (like real product shots)
   const left = Math.round((PLATE_SIZE - pw) / 2)
   const top = Math.max(0, Math.round((PLATE_SIZE - ph) / 2) - 20)
 
-  // Ground shadow: warm dark ellipse, offset to lower-right (light from upper-left)
+  // Drop shadow: clone product, colorize dark warm brown, blur, offset lower-right
+  // (light from upper-left per brand photography)
   const SHADOW_OFFSET_X = 22
   const SHADOW_OFFSET_Y = 32
-  const shadowW = Math.round(pw * 0.80)
-  const shadowH = Math.max(20, Math.round(pw * 0.07))
-  const shadowLeft = Math.max(0, left + Math.round((pw - shadowW) / 2) + SHADOW_OFFSET_X)
-  const shadowTop = Math.max(0, top + ph - Math.round(shadowH * 0.4) + SHADOW_OFFSET_Y)
+  const shadowImg = productImg.clone()
+  const { data: sd, width: sw, height: sh } = shadowImg.bitmap
+  for (let y = 0; y < sh; y++) {
+    for (let x = 0; x < sw; x++) {
+      const idx = (y * sw + x) * 4
+      if (sd[idx + 3] > 0) {
+        sd[idx] = 30        // R
+        sd[idx + 1] = 18    // G
+        sd[idx + 2] = 8     // B
+        sd[idx + 3] = Math.floor(sd[idx + 3] * 0.55)
+      }
+    }
+  }
+  shadowImg.blur(14)
 
-  const shadowSvg = Buffer.from(
-    `<svg width="${shadowW}" height="${shadowH * 4}" xmlns="http://www.w3.org/2000/svg">` +
-    `<ellipse cx="${shadowW / 2}" cy="${shadowH * 2}" rx="${shadowW / 2}" ry="${shadowH}" fill="rgba(30,18,8,0.50)"/>` +
-    `</svg>`
-  )
-  const shadowLayer = await sharp(shadowSvg).blur(16).png().toBuffer()
+  // Composite: plate → shadow (offset) → product (centered)
+  plate.composite(shadowImg, left + SHADOW_OFFSET_X, top + SHADOW_OFFSET_Y)
+  plate.composite(productImg, left, top)
 
-  // Composite: blurred plate → shadow ellipse → sharp product
-  return sharp(plateBuffer)
-    .resize(PLATE_SIZE, PLATE_SIZE, { fit: 'cover', position: 'centre' })
-    .composite([
-      { input: shadowLayer, left: shadowLeft, top: shadowTop },
-      { input: productResized, left, top },
-    ])
-    .jpeg({ quality: 90 })
-    .toBuffer()
+  return plate.getBuffer('image/jpeg', { quality: 90 }) as Promise<Buffer>
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
