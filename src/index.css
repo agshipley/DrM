@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  /* Verified from drmaxs.com — June 2026 */
+  --color-cream: #FDF9F2;        /* dominant page background */
+  --color-ink: #2B2651;          /* primary text, buttons — deep indigo */
+  --color-shell: #FDF3E6;        /* warm section background tint */
+  --color-sand: #F9EBD6;         /* deeper warm tint — cards, panels */
+
+  /* Functional UI accents — tool-only, not site colors */
+  --color-calendula: #D99A2B;    /* concept badges, highlights */
+  --color-sage: #7A8B6F;         /* 0–12m / baby age band */
+  --color-clay: #B5654A;         /* adult age band */
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
